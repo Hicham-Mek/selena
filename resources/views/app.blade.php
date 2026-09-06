@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Add Arabic language and RTL direction natively -->
-<html lang="ar" dir="rtl">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">

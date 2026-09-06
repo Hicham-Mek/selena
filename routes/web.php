@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -24,4 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::post('/language', function (Request $request) {
+    $request->validate(['locale' => 'required|in:ar,en']);
+    Session::put('locale', $request->locale);
+    return back();
+})->name('language.switch');
+
+require __DIR__ . '/auth.php';
