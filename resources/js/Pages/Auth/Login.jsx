@@ -4,9 +4,12 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { t } from '@/translations';
 
 export default function Login({ status, canResetPassword }) {
+    const { locale = 'ar' } = usePage().props;
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -23,7 +26,13 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title={t('auth.loginTitle', locale)} />
+
+            <div className="mb-6 text-center">
+                <h1 className="text-2xl font-bold text-gray-900">
+                    {t('auth.loginTitle', locale)}
+                </h1>
+            </div>
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">
@@ -31,15 +40,16 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={t('auth.email', locale)} />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
+                        placeholder={t('auth.emailPlaceholder', locale)}
                         className="mt-1 block w-full"
                         autoComplete="username"
                         isFocused={true}
@@ -49,14 +59,15 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <div>
+                    <InputLabel htmlFor="password" value={t('auth.password', locale)} />
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
+                        placeholder={t('auth.passwordPlaceholder', locale)}
                         className="mt-1 block w-full"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
@@ -65,8 +76,8 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4 block">
-                    <label className="flex items-center">
+                <div className="flex items-center justify-between">
+                    <label className="flex items-center cursor-pointer">
                         <Checkbox
                             name="remember"
                             checked={data.remember}
@@ -75,23 +86,30 @@ export default function Login({ status, canResetPassword }) {
                             }
                         />
                         <span className="ms-2 text-sm text-gray-600">
-                            Remember me
+                            {t('auth.rememberMe', locale)}
                         </span>
                     </label>
-                </div>
 
-                <div className="mt-4 flex items-center justify-end">
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
-                            Forgot your password?
+                            {t('auth.forgotPassword', locale)}
                         </Link>
                     )}
+                </div>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                <div className="flex items-center justify-between pt-2">
+                    <Link
+                        href={route('register')}
+                        className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >
+                        {t('auth.dontHaveAccount', locale)}
+                    </Link>
+
+                    <PrimaryButton disabled={processing}>
+                        {t('auth.loginButton', locale)}
                     </PrimaryButton>
                 </div>
             </form>

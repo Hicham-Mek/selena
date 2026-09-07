@@ -3,9 +3,12 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { t } from '@/translations';
 
 export default function ResetPassword({ token, email }) {
+    const { locale = 'ar' } = usePage().props;
+
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
         email: email,
@@ -23,17 +26,24 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <GuestLayout>
-            <Head title="Reset Password" />
+            <Head title={t('auth.resetPasswordTitle', locale)} />
 
-            <form onSubmit={submit}>
+            <div className="mb-6 text-center">
+                <h1 className="text-2xl font-bold text-gray-900">
+                    {t('auth.resetPasswordTitle', locale)}
+                </h1>
+            </div>
+
+            <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={t('auth.email', locale)} />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
+                        placeholder={t('auth.emailPlaceholder', locale)}
                         className="mt-1 block w-full"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
@@ -42,14 +52,15 @@ export default function ResetPassword({ token, email }) {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <div>
+                    <InputLabel htmlFor="password" value={t('auth.password', locale)} />
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
+                        placeholder={t('auth.passwordPlaceholder', locale)}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                         isFocused={true}
@@ -59,10 +70,10 @@ export default function ResetPassword({ token, email }) {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value={t('auth.confirmPassword', locale)}
                     />
 
                     <TextInput
@@ -70,6 +81,7 @@ export default function ResetPassword({ token, email }) {
                         id="password_confirmation"
                         name="password_confirmation"
                         value={data.password_confirmation}
+                        placeholder={t('auth.confirmPasswordPlaceholder', locale)}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
@@ -83,9 +95,9 @@ export default function ResetPassword({ token, email }) {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
+                <div className="flex items-center justify-end pt-2">
+                    <PrimaryButton disabled={processing}>
+                        {t('auth.resetPasswordButton', locale)}
                     </PrimaryButton>
                 </div>
             </form>

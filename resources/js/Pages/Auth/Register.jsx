@@ -3,11 +3,15 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { t } from '@/translations';
 
 export default function Register() {
+    const { locale = 'ar' } = usePage().props;
+
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
+        first_name: '',
+        last_name: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -23,36 +27,63 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title={t('auth.registerTitle', locale)} />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
+            <div className="mb-6 text-center">
+                <h1 className="text-2xl font-bold text-gray-900">
+                    {t('auth.registerTitle', locale)}
+                </h1>
+            </div>
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
+            <form onSubmit={submit} className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <InputLabel htmlFor="first_name" value={t('auth.firstName', locale)} />
 
-                    <InputError message={errors.name} className="mt-2" />
+                        <TextInput
+                            id="first_name"
+                            name="first_name"
+                            value={data.first_name}
+                            placeholder={t('auth.firstNamePlaceholder', locale)}
+                            className="mt-1 block w-full"
+                            autoComplete="given-name"
+                            isFocused={true}
+                            onChange={(e) => setData('first_name', e.target.value)}
+                            required
+                        />
+
+                        <InputError message={errors.first_name} className="mt-2" />
+                    </div>
+
+                    <div>
+                        <InputLabel htmlFor="last_name" value={t('auth.lastName', locale)} />
+
+                        <TextInput
+                            id="last_name"
+                            name="last_name"
+                            value={data.last_name}
+                            placeholder={t('auth.lastNamePlaceholder', locale)}
+                            className="mt-1 block w-full"
+                            autoComplete="family-name"
+                            onChange={(e) => setData('last_name', e.target.value)}
+                            required
+                        />
+
+                        <InputError message={errors.last_name} className="mt-2" />
+                    </div>
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                <div>
+                    <InputLabel htmlFor="email" value={t('auth.email', locale)} />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
+                        placeholder={t('auth.emailPlaceholder', locale)}
                         className="mt-1 block w-full"
-                        autoComplete="username"
+                        autoComplete="email"
                         onChange={(e) => setData('email', e.target.value)}
                         required
                     />
@@ -60,14 +91,15 @@ export default function Register() {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <div>
+                    <InputLabel htmlFor="password" value={t('auth.password', locale)} />
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
+                        placeholder={t('auth.passwordPlaceholder', locale)}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
@@ -77,10 +109,10 @@ export default function Register() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value={t('auth.confirmPassword', locale)}
                     />
 
                     <TextInput
@@ -88,6 +120,7 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
+                        placeholder={t('auth.confirmPasswordPlaceholder', locale)}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
@@ -102,16 +135,16 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
+                <div className="flex items-center justify-between pt-2">
                     <Link
                         href={route('login')}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Already registered?
+                        {t('auth.alreadyRegistered', locale)}
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                    <PrimaryButton disabled={processing}>
+                        {t('auth.registerButton', locale)}
                     </PrimaryButton>
                 </div>
             </form>

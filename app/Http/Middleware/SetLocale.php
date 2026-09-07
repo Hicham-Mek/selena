@@ -15,8 +15,15 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Default to Arabic if no language is selected
-        $locale = session('locale', 'ar');
+        // Resolve locale from session, persistent cookie, or config default (Arabic)
+        $locale = $request->session()->get('locale')
+            ?? $request->cookie('locale')
+            ?? config('app.locale', 'ar');
+
+        if (!in_array($locale, ['ar', 'en'])) {
+            $locale = 'ar';
+        }
+
         app()->setLocale($locale);
 
         return $next($request);

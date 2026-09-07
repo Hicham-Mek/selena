@@ -1,6 +1,10 @@
-import { Head, Link } from '@inertiajs/react';
+import LanguageToggle from '@/Components/LanguageToggle';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { t } from '@/translations';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
+    const { locale = 'ar' } = usePage().props;
+
     const handleImageError = () => {
         document
             .getElementById('screenshot-container')
@@ -14,7 +18,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
     return (
         <>
-            <Head title="Welcome" />
+            <Head title={t('welcome.title', locale)} />
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
                 <img
                     id="background"
@@ -24,6 +28,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <div className="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                         <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
+                            <div className="flex items-center gap-2">
+                                <LanguageToggle />
+                            </div>
+
                             <div className="flex lg:col-start-2 lg:justify-center">
                                 <svg
                                     className="h-12 w-auto text-white lg:h-16 lg:text-[#FF2D20]"
@@ -43,7 +51,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         href={route('dashboard')}
                                         className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                     >
-                                        Dashboard
+                                        {t('nav.dashboard', locale)}
                                     </Link>
                                 ) : (
                                     <>
@@ -51,13 +59,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                             href={route('login')}
                                             className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                         >
-                                            Log in
+                                            {t('nav.login', locale)}
                                         </Link>
                                         <Link
                                             href={route('register')}
                                             className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                         >
-                                            Register
+                                            {t('nav.register', locale)}
                                         </Link>
                                     </>
                                 )}

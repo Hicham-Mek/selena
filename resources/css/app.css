@@ -3,9 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
+    html[dir="rtl"] {
         direction: rtl;
-        text-align: right;
+    }
+
+    html[dir="ltr"] {
+        direction: ltr;
     }
 
     body {
@@ -15,15 +18,16 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Keep numbers, codes, and emails readable LTR when inside Arabic text */
+    /* Keep numbers, codes, passwords, and emails readable LTR inside Arabic forms */
     bdi,
     .ltr-content,
     input[type='email'],
     input[type='tel'],
     input[type='url'],
     input[type='password'] {
-        direction: ltr;
-        text-align: left;
+        direction: ltr !important;
+        text-align: left !important;
+        unicode-bidi: plaintext;
     }
 }
 
@@ -32,9 +36,9 @@
         direction: rtl;
         text-align: right;
     }
+
     .dir-ltr {
         direction: ltr;
         text-align: left;
     }
 }
-

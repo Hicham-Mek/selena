@@ -1,8 +1,10 @@
 import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { t } from '@/translations';
 
 export default function VerifyEmail({ status }) {
+    const { locale = 'ar' } = usePage().props;
     const { post, processing } = useForm({});
 
     const submit = (e) => {
@@ -13,26 +15,28 @@ export default function VerifyEmail({ status }) {
 
     return (
         <GuestLayout>
-            <Head title="Email Verification" />
+            <Head title={t('auth.verifyEmailTitle', locale)} />
+
+            <div className="mb-6 text-center">
+                <h1 className="text-2xl font-bold text-gray-900">
+                    {t('auth.verifyEmailTitle', locale)}
+                </h1>
+            </div>
 
             <div className="mb-4 text-sm text-gray-600">
-                Thanks for signing up! Before getting started, could you verify
-                your email address by clicking on the link we just emailed to
-                you? If you didn't receive the email, we will gladly send you
-                another.
+                {t('auth.verifyEmailDescription', locale)}
             </div>
 
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                    {t('auth.verificationLinkSent', locale)}
                 </div>
             )}
 
             <form onSubmit={submit}>
                 <div className="mt-4 flex items-center justify-between">
                     <PrimaryButton disabled={processing}>
-                        Resend Verification Email
+                        {t('auth.resendVerificationEmail', locale)}
                     </PrimaryButton>
 
                     <Link
@@ -41,7 +45,7 @@ export default function VerifyEmail({ status }) {
                         as="button"
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Log Out
+                        {t('auth.logout', locale)}
                     </Link>
                 </div>
             </form>
