@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AudioStreamController;
+use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -26,9 +28,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// ─── Novels & Chapters (Public) ────────────────────────────────
+Route::get('/novels/{novel:slug}', [ChapterController::class, 'showNovel'])->name('novels.show');
+Route::get('/novels/{novel:slug}/chapters/{chapter}', [ChapterController::class, 'show'])->name('chapters.show');
+Route::get('/chapters/{chapter}/audio', [AudioStreamController::class, 'stream'])->name('chapters.audio');
+
+// ─── Language Switcher ─────────────────────────────────────────
 Route::post('/language', function (Request $request) {
     $request->validate(['locale' => 'required|in:ar,en']);
-    Session::put('locale', $request->locale);
+    $locale = $request->locale;
+    session(['locale' => $locale]);
+    cookie()->queue(cookie()->forever('locale', $locale));
     return back();
 })->name('language.switch');
 
