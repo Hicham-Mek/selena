@@ -50,6 +50,11 @@ class Novel extends Model
         return $this->hasMany(\App\Models\Order::class);
     }
 
+    public function entitlements(): HasMany
+    {
+        return $this->hasMany(\App\Models\Entitlement::class);
+    }
+
     // ─── Scopes ────────────────────────────────────────────────
 
     public function scopePublished($query)

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AudioStreamController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
@@ -41,7 +40,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/novels', [App\Http\Controllers\NovelController::class, 'index'])->name('novels.index');
 Route::get('/novels/{novel:slug}', [ChapterController::class, 'showNovel'])->name('novels.show');
 Route::get('/novels/{novel:slug}/chapters/{chapter}', [ChapterController::class, 'show'])->name('chapters.show');
-Route::get('/chapters/{chapter}/audio', [AudioStreamController::class, 'stream'])->name('chapters.audio');
+
+// ─── Chapter Audio (Signed URL — expires 2 hours) ──────────────
+// Protected by 'signed' middleware: expired or tampered URLs return 403.
+// The signed URL is generated server-side in ChapterController::show().
+Route::get('/chapters/{chapter}/audio', [ChapterController::class, 'streamAudio'])
+    ->middleware('signed')
+    ->name('chapters.audio');
 
 // ─── Language Switcher ─────────────────────────────────────────
 Route::post('/language', function (Request $request) {

@@ -1,13 +1,22 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useTranslation } from '@/translations';
 import { usePage } from '@inertiajs/react';
 
-export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }) {
+export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, audio_url }) {
     const { t, locale, isRtl } = useTranslation();
     const { auth } = usePage().props;
 
-    const novelTitle = locale === 'en' && novel.title_en ? novel.title_en : novel.title_ar;
+    const novelTitle   = locale === 'en' && novel.title_en   ? novel.title_en   : novel.title_ar;
     const chapterTitle = locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title;
+
+    /**
+     * If the 2-hour signed audio URL expires while the user has the tab open,
+     * the <audio> element fires an error. We silently request a fresh signed URL
+     * from the server using Inertia's partial reload (only re-fetches audio_url).
+     */
+    const handleAudioError = () => {
+        router.reload({ only: ['audio_url'] });
+    };
 
     return (
         <>
@@ -42,9 +51,17 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
                                 {t('chapter.chapterNumber', { number: chapter.chapter_number })}
                             </span>
-                            {chapter.is_preview && (
+                            {/* Content Type Badge — Free Preview or Purchased */}
+                            {chapter.is_preview ? (
                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                     {t('chapter.previewBadge')}
+                                </span>
+                            ) : (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    {t('chapter.purchasedBadge')}
                                 </span>
                             )}
                         </div>
@@ -53,8 +70,8 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                         </h1>
                     </header>
 
-                    {/* Audio Player */}
-                    {chapter.has_audio && (
+                    {/* Audio Player — uses server-generated 2-hour signed URL */}
+                    {chapter.has_audio && audio_url && (
                         <div className="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                             <div className="flex items-center gap-3 mb-3">
                                 <svg className="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,11 +81,18 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                                     {t('chapter.listen')}
                                 </span>
                             </div>
+                            {/*
+                              * key={audio_url} forces React to unmount and remount the <audio>
+                              * element whenever a fresh signed URL is loaded via Inertia partial
+                              * reload, ensuring the browser picks up the new src immediately.
+                              */}
                             <audio
+                                key={audio_url}
                                 controls
                                 preload="metadata"
                                 className="w-full"
-                                src={route('chapters.audio', { chapter: chapter.id })}
+                                src={audio_url}
+                                onError={handleAudioError}
                             >
                                 {t('chapter.audioNotSupported')}
                             </audio>
@@ -89,14 +113,11 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                     {/* Chapter Navigation */}
                     <nav className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                            {/* Previous Chapter or Back to Novel */}
+                            {/* Previous Chapter */}
                             {prevChapter ? (
                                 prevChapter.is_preview ? (
                                     <Link
-                                        href={route('chapters.show', {
-                                            novel: novel.slug,
-                                            chapter: prevChapter.id,
-                                        })}
+                                        href={route('chapters.show', { novel: novel.slug, chapter: prevChapter.id })}
                                         className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50 dark:hover:bg-gray-700/50 transition-all group flex-1 shadow-sm"
                                     >
                                         <svg className={`w-5 h-5 text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex-shrink-0 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,14 +163,11 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                                 </Link>
                             )}
 
-                            {/* Next Chapter or Back to Novel */}
+                            {/* Next Chapter */}
                             {nextChapter ? (
                                 nextChapter.is_preview ? (
                                     <Link
-                                        href={route('chapters.show', {
-                                            novel: novel.slug,
-                                            chapter: nextChapter.id,
-                                        })}
+                                        href={route('chapters.show', { novel: novel.slug, chapter: nextChapter.id })}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50 dark:hover:bg-gray-700/50 transition-all group flex-1 shadow-sm ${isRtl ? 'flex-row-reverse text-left' : 'flex-row text-right'}`}
                                     >
                                         <div className={`flex-1 ${isRtl ? 'text-left' : 'text-right'}`}>

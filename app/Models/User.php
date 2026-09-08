@@ -60,6 +60,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Order::class);
     }
 
+    public function entitlements()
+    {
+        return $this->hasMany(Entitlement::class);
+    }
+
     /**
      * Check if user is an admin.
      */
@@ -80,14 +85,23 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * Check if the user owns a novel (has an approved order).
-     * This will be replaced by entitlements in M5.
+     * Check if the user owns a novel via an Entitlement record.
      */
     public function ownsNovel(Novel $novel): bool
     {
-        return $this->orders()
+        return $this->entitlements()
             ->where('novel_id', $novel->id)
-            ->approved()
+            ->exists();
+    }
+
+    /**
+     * Check if the user has an entitlement for a novel by its ID.
+     * Used as the core authorization boundary for paid chapters (M6).
+     */
+    public function hasEntitlementFor(int $novelId): bool
+    {
+        return $this->entitlements()
+            ->where('novel_id', $novelId)
             ->exists();
     }
 

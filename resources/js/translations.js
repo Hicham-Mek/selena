@@ -68,12 +68,15 @@ export const translations = {
         chapter: {
             chapterNumber: 'الفصل {number}',
             previewBadge: 'معاينة مجانية',
+            purchasedBadge: 'محتوى مدفوع',
             listen: 'استمع إلى هذا الفصل',
             audioNotSupported: 'المتصفح لا يدعم تشغيل الصوت.',
+            audioExpired: 'انتهت صلاحية رابط الصوت. جارٍ التجديد...',
             previousChapter: 'الفصل السابق',
             nextChapter: 'الفصل التالي',
             backToNovel: 'العودة للرواية',
             lockedBadge: 'مدفوع (يتطلب الشراء)',
+            purchase_required: 'يتطلب الوصول إلى هذا الفصل الشراء أولاً.',
         },
         order: {
             purchase_novel: 'شراء الرواية',
@@ -192,12 +195,15 @@ export const translations = {
         chapter: {
             chapterNumber: 'Chapter {number}',
             previewBadge: 'Free Preview',
+            purchasedBadge: 'Purchased Content',
             listen: 'Listen to this chapter',
             audioNotSupported: 'Your browser does not support audio playback.',
+            audioExpired: 'Audio link expired. Refreshing...',
             previousChapter: 'Previous Chapter',
             nextChapter: 'Next Chapter',
             backToNovel: 'Back to Novel',
             lockedBadge: 'Locked (Requires Purchase)',
+            purchase_required: 'Purchase required to unlock this content.',
         },
         order: {
             purchase_novel: 'Purchase Novel',
