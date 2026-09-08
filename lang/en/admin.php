@@ -55,4 +55,18 @@ return [
     'status_under_review' => 'Under Review',
     'status_approved' => 'Approved',
     'status_rejected' => 'Rejected',
+    'customer' => 'Customer',
+
+    // Order Actions (M5)
+    'approve' => 'Approve',
+    'reject' => 'Reject',
+    'close' => 'Close',
+    'approve_order' => 'Approve Order',
+    'approve_order_confirm' => 'Are you sure you want to approve this order and grant access to the novel?',
+    'reject_order' => 'Reject Order',
+    'rejection_reason_placeholder' => 'e.g. Blurry receipt, wrong amount...',
+    'order_approved_notification' => 'Order approved and access granted.',
+    'order_rejected_notification' => 'Order rejected.',
+    'download_receipt' => 'Download Receipt',
+    'receipt_link_expires' => 'This link expires in 10 minutes.',
 ];

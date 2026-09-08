@@ -55,4 +55,18 @@ return [
     'status_under_review' => 'قيد المراجعة',
     'status_approved' => 'مقبول',
     'status_rejected' => 'مرفوض',
+    'customer' => 'العميل',
+
+    // Order Actions (M5)
+    'approve' => 'قبول',
+    'reject' => 'رفض',
+    'close' => 'إغلاق',
+    'approve_order' => 'قبول الطلب',
+    'approve_order_confirm' => 'هل أنت متأكد من قبول هذا الطلب ومنح الوصول إلى الرواية؟',
+    'reject_order' => 'رفض الطلب',
+    'rejection_reason_placeholder' => 'مثال: الوصل غير واضح، المبلغ غير صحيح...',
+    'order_approved_notification' => 'تم قبول الطلب ومنح صلاحية الوصول.',
+    'order_rejected_notification' => 'تم رفض الطلب.',
+    'download_receipt' => 'تحميل الوصل',
+    'receipt_link_expires' => 'هذا الرابط صالح لمدة 10 دقائق فقط.',
 ];

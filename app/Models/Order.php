@@ -41,6 +41,11 @@ class Order extends Model
         return $this->belongsTo(Novel::class);
     }
 
+    public function entitlement()
+    {
+        return $this->hasOne(Entitlement::class);
+    }
+
     // ─── Scopes ────────────────────────────────────────────────
 
     public function scopePending($query)
