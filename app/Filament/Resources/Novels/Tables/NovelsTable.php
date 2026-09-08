@@ -17,49 +17,61 @@ class NovelsTable
         return $table
             ->columns([
                 ImageColumn::make('cover_image_path')
-                    ->label('Cover')
+                    ->label(__('admin.cover_image'))
                     ->disk('public')
                     ->width(50)
                     ->height(75),
+
                 TextColumn::make('title_ar')
-                    ->label('العنوان')
+                    ->label(__('admin.title_ar'))
                     ->searchable()
                     ->sortable()
-                    ->limit(40),
+                    ->limit(35),
+
                 TextColumn::make('title_en')
-                    ->label('English Title')
+                    ->label(__('admin.title_en'))
                     ->searchable()
                     ->sortable()
-                    ->limit(40)
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->limit(35)
+                    ->placeholder('—'),
+
                 TextColumn::make('price_dzd')
-                    ->label('Price')
+                    ->label(__('admin.price_dzd'))
                     ->money('DZD')
                     ->sortable(),
+
                 TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('admin.status'))
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'published' => __('admin.status_published'),
+                        'draft' => __('admin.status_draft'),
+                        default => $state,
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'published' => 'success',
                         'draft' => 'warning',
                         default => 'gray',
                     }),
+
                 TextColumn::make('chapters_count')
-                    ->label('Chapters')
+                    ->label(__('admin.chapters_count'))
                     ->counts('chapters')
                     ->sortable(),
+
                 TextColumn::make('created_at')
-                    ->label('Created')
-                    ->dateTime('M d, Y')
+                    ->label(__('admin.created_at'))
+                    ->dateTime('d/m/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('status')
+                    ->label(__('admin.status'))
                     ->options([
-                        'draft' => 'Draft',
-                        'published' => 'Published',
+                        'draft' => __('admin.status_draft'),
+                        'published' => __('admin.status_published'),
                     ]),
             ])
             ->recordActions([

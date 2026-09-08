@@ -41,10 +41,17 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
+            ->userMenuItems([
+                \Filament\Navigation\MenuItem::make()
+                    ->label(fn (): string => app()->getLocale() === 'ar' ? 'English (EN)' : 'العربية (AR)')
+                    ->icon(\Filament\Support\Icons\Heroicon::OutlinedGlobeAlt)
+                    ->url(fn (): string => route('language.switch.get', ['locale' => app()->getLocale() === 'ar' ? 'en' : 'ar'])),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
+                \App\Http\Middleware\SetLocale::class,
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,

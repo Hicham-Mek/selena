@@ -16,32 +16,23 @@ class NovelForm
     {
         return $schema
             ->components([
-                Section::make('Arabic Content')
-                    ->description('Required Arabic title and description')
+                Section::make(__('admin.novels'))
                     ->schema([
                         TextInput::make('title_ar')
-                            ->label('العنوان بالعربية')
+                            ->label(__('admin.title_ar'))
+                            ->placeholder('مثال: البؤساء')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(function ($state, callable $set, $get) {
-                                // Auto-generate slug from English title if available, otherwise Arabic
                                 if (empty($get('slug'))) {
                                     $set('slug', Str::slug($get('title_en') ?: $state));
                                 }
                             }),
-                        Textarea::make('description_ar')
-                            ->label('الوصف بالعربية')
-                            ->required()
-                            ->rows(4),
-                    ])
-                    ->columns(1),
 
-                Section::make('English Content (Optional)')
-                    ->description('Optional English translations')
-                    ->schema([
                         TextInput::make('title_en')
-                            ->label('English Title')
+                            ->label(__('admin.title_en'))
+                            ->placeholder('e.g. Les Misérables')
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(function ($state, callable $set) {
@@ -49,38 +40,48 @@ class NovelForm
                                     $set('slug', Str::slug($state));
                                 }
                             }),
-                        Textarea::make('description_en')
-                            ->label('English Description')
-                            ->rows(4),
-                    ])
-                    ->columns(1)
-                    ->collapsed(),
 
-                Section::make('Details')
-                    ->schema([
                         TextInput::make('slug')
-                            ->label('Slug (URL)')
+                            ->label(__('admin.slug'))
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
-                            ->helperText('Auto-generated from title. You can customise it.'),
+                            ->helperText(__('admin.slug_helper'))
+                            ->columnSpanFull(),
+
+                        Textarea::make('description_ar')
+                            ->label(__('admin.description_ar'))
+                            ->required()
+                            ->rows(4),
+
+                        Textarea::make('description_en')
+                            ->label(__('admin.description_en'))
+                            ->rows(4),
+                    ])
+                    ->columns(2),
+
+                Section::make(__('admin.pricing_and_publishing'))
+                    ->schema([
                         TextInput::make('price_dzd')
-                            ->label('Price (DZD)')
+                            ->label(__('admin.price_dzd'))
                             ->numeric()
                             ->required()
                             ->prefix('د.ج')
                             ->minValue(0)
                             ->step(0.01),
+
                         Select::make('status')
-                            ->label('Status')
+                            ->label(__('admin.status'))
                             ->options([
-                                'draft' => 'Draft',
-                                'published' => 'Published',
+                                'draft' => __('admin.status_draft'),
+                                'published' => __('admin.status_published'),
                             ])
                             ->default('draft')
                             ->required(),
+
                         FileUpload::make('cover_image_path')
-                            ->label('Cover Image')
+                            ->label(__('admin.cover_image'))
+                            ->helperText(__('admin.cover_image_helper'))
                             ->image()
                             ->disk('public')
                             ->directory('covers')
@@ -88,7 +89,8 @@ class NovelForm
                             ->imageCropAspectRatio('2:3')
                             ->imageResizeTargetWidth('400')
                             ->imageResizeTargetHeight('600')
-                            ->maxSize(5120), // 5MB
+                            ->maxSize(5120) // 5MB
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
             ]);

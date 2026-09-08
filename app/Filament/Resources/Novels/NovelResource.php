@@ -22,6 +22,21 @@ class NovelResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title_ar';
 
+    public static function getModelLabel(): string
+    {
+        return __('admin.novel');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.novels');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.novels');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return NovelForm::configure($schema);

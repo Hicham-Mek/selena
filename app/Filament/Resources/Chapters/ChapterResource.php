@@ -22,6 +22,21 @@ class ChapterResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    public static function getModelLabel(): string
+    {
+        return __('admin.chapter');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.chapters');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.chapters');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ChapterForm::configure($schema);
