@@ -46,6 +46,12 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 </svg>
                             </div>
                             <nav className="-mx-3 flex flex-1 justify-end">
+                                <Link
+                                    href={route('novels.index')}
+                                    className="rounded-md px-3 py-2 text-[#FF2D20] font-semibold ring-1 ring-transparent transition hover:text-[#FF2D20]/80 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-[#FF2D20] dark:hover:text-[#FF2D20]/80 dark:focus-visible:ring-white mr-4"
+                                >
+                                    {t('catalog.browse_novels', locale)}
+                                </Link>
                                 {auth.user ? (
                                     <Link
                                         href={route('dashboard')}
