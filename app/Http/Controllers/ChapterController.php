@@ -15,9 +15,24 @@ class ChapterController extends Controller
     public function showNovel(Novel $novel): Response
     {
         $novel->load(['chapters' => function ($query) {
-            $query->select('id', 'novel_id', 'chapter_number', 'title', 'is_preview', 'audio_path')
+            $query->select('id', 'novel_id', 'chapter_number', 'title', 'title_en', 'is_preview', 'audio_path')
                   ->orderBy('chapter_number');
         }]);
+
+        // Determine purchase status for the authenticated user
+        $user = auth()->user();
+        $purchaseStatus = null;
+
+        if ($user) {
+            if ($user->ownsNovel($novel)) {
+                $purchaseStatus = 'owned';
+            } else {
+                $activeOrder = $user->activeOrderFor($novel);
+                if ($activeOrder) {
+                    $purchaseStatus = $activeOrder->status; // 'pending' or 'under_review'
+                }
+            }
+        }
 
         return Inertia::render('Novels/Show', [
             'novel' => [
@@ -34,10 +49,12 @@ class ChapterController extends Controller
                     'id' => $ch->id,
                     'chapter_number' => $ch->chapter_number,
                     'title' => $ch->title,
+                    'title_en' => $ch->title_en,
                     'is_preview' => $ch->is_preview,
                     'has_audio' => filled($ch->audio_path),
                 ]),
             ],
+            'purchaseStatus' => $purchaseStatus,
         ]);
     }
 
@@ -64,6 +81,7 @@ class ChapterController extends Controller
                 'id' => $chapter->id,
                 'chapter_number' => $chapter->chapter_number,
                 'title' => $chapter->title,
+                'title_en' => $chapter->title_en,
                 'content_text' => $chapter->content_text,
                 'is_preview' => $chapter->is_preview,
                 'has_audio' => $chapter->hasAudio(),
@@ -78,12 +96,14 @@ class ChapterController extends Controller
                 'id' => $prevChapter->id,
                 'chapter_number' => $prevChapter->chapter_number,
                 'title' => $prevChapter->title,
+                'title_en' => $prevChapter->title_en,
                 'is_preview' => $prevChapter->is_preview,
             ] : null,
             'nextChapter' => $nextChapter ? [
                 'id' => $nextChapter->id,
                 'chapter_number' => $nextChapter->chapter_number,
                 'title' => $nextChapter->title,
+                'title_en' => $nextChapter->title_en,
                 'is_preview' => $nextChapter->is_preview,
             ] : null,
         ]);

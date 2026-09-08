@@ -45,6 +45,11 @@ class Novel extends Model
         return $this->hasMany(Chapter::class)->orderBy('chapter_number');
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(\App\Models\Order::class);
+    }
+
     // ─── Scopes ────────────────────────────────────────────────
 
     public function scopePublished($query)

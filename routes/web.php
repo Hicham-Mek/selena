@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AudioStreamController;
 use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReceiptController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,9 +28,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // ─── Orders (Authenticated) ───────────────────────────────────
+    Route::get('/novels/{novel:slug}/purchase', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/novels/{novel:slug}/purchase', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/receipt', [OrderController::class, 'uploadReceipt'])->name('orders.upload-receipt');
+    Route::get('/orders/{order}/receipt', [ReceiptController::class, 'show'])->name('orders.receipt');
 });
 
 // ─── Novels & Chapters (Public) ────────────────────────────────
+Route::get('/novels', [App\Http\Controllers\NovelController::class, 'index'])->name('novels.index');
 Route::get('/novels/{novel:slug}', [ChapterController::class, 'showNovel'])->name('novels.show');
 Route::get('/novels/{novel:slug}/chapters/{chapter}', [ChapterController::class, 'show'])->name('chapters.show');
 Route::get('/chapters/{chapter}/audio', [AudioStreamController::class, 'stream'])->name('chapters.audio');
@@ -41,5 +51,13 @@ Route::post('/language', function (Request $request) {
     cookie()->queue(cookie()->forever('locale', $locale));
     return back();
 })->name('language.switch');
+
+Route::get('/language/{locale}', function (string $locale) {
+    if (in_array($locale, ['ar', 'en'])) {
+        session(['locale' => $locale]);
+        cookie()->queue(cookie()->forever('locale', $locale));
+    }
+    return back();
+})->name('language.switch.get');
 
 require __DIR__ . '/auth.php';

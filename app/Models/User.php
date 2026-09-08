@@ -55,12 +55,51 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasOne(Profile::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     /**
      * Check if user is an admin.
      */
     public function isAdmin(): bool
     {
         return (bool) $this->is_admin;
+    }
+
+    /**
+     * Check if the user has an active (pending or under_review) order for a novel.
+     */
+    public function hasActiveOrderFor(Novel $novel): bool
+    {
+        return $this->orders()
+            ->where('novel_id', $novel->id)
+            ->active()
+            ->exists();
+    }
+
+    /**
+     * Check if the user owns a novel (has an approved order).
+     * This will be replaced by entitlements in M5.
+     */
+    public function ownsNovel(Novel $novel): bool
+    {
+        return $this->orders()
+            ->where('novel_id', $novel->id)
+            ->approved()
+            ->exists();
+    }
+
+    /**
+     * Get the active order for a specific novel, if any.
+     */
+    public function activeOrderFor(Novel $novel): ?Order
+    {
+        return $this->orders()
+            ->where('novel_id', $novel->id)
+            ->active()
+            ->first();
     }
 
     /**

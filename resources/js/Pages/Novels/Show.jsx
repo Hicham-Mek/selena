@@ -4,12 +4,76 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { useTranslation } from '@/translations';
 import { usePage } from '@inertiajs/react';
 
-export default function NovelShow({ novel }) {
+export default function NovelShow({ novel, purchaseStatus }) {
     const { t, locale, isRtl } = useTranslation();
     const { auth } = usePage().props;
 
     const title = locale === 'en' && novel.title_en ? novel.title_en : novel.title_ar;
     const description = locale === 'en' && novel.description_en ? novel.description_en : novel.description_ar;
+
+    // Determine what purchase button to show
+    const renderPurchaseAction = () => {
+        if (!auth?.user) {
+            return (
+                <Link
+                    href={route('login')}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#FF2D20] hover:bg-[#e0261b] text-white font-bold rounded-xl transition-colors shadow-lg shadow-red-500/20"
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    {t('order.login_to_purchase')}
+                </Link>
+            );
+        }
+
+        if (purchaseStatus === 'owned') {
+            return (
+                <span className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 font-bold rounded-xl">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {t('order.purchased')}
+                </span>
+            );
+        }
+
+        if (purchaseStatus === 'pending') {
+            return (
+                <span className="inline-flex items-center gap-2 px-6 py-3 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 font-bold rounded-xl">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {t('order.order_pending')}
+                </span>
+            );
+        }
+
+        if (purchaseStatus === 'under_review') {
+            return (
+                <span className="inline-flex items-center gap-2 px-6 py-3 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 font-bold rounded-xl">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    {t('order.already_ordered')}
+                </span>
+            );
+        }
+
+        // No active order — show purchase button
+        return (
+            <Link
+                href={route('orders.create', novel.slug)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#FF2D20] hover:bg-[#e0261b] text-white font-bold rounded-xl transition-colors shadow-lg shadow-red-500/20"
+            >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+                </svg>
+                {t('order.purchase_novel')} — {novel.price_dzd} {t('novel.currency')}
+            </Link>
+        );
+    };
 
     const content = (
         <>
@@ -45,9 +109,12 @@ export default function NovelShow({ novel }) {
                                     {novel.price_dzd} {t('novel.currency')}
                                 </span>
                             </div>
-                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                                 {description}
                             </p>
+
+                            {/* Purchase Action */}
+                            {renderPurchaseAction()}
                         </div>
                     </div>
 
@@ -74,7 +141,7 @@ export default function NovelShow({ novel }) {
                                                     {chapter.chapter_number}
                                                 </span>
                                                 <span className="text-gray-900 dark:text-white font-medium">
-                                                    {chapter.title}
+                                                    {locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title}
                                                 </span>
                                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                                     {t('novel.freePreview')}
@@ -98,7 +165,7 @@ export default function NovelShow({ novel }) {
                                                     {chapter.chapter_number}
                                                 </span>
                                                 <span className="text-gray-700 dark:text-gray-300 font-medium">
-                                                    {chapter.title}
+                                                    {locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2 text-gray-400">
