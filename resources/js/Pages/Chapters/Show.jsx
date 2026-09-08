@@ -7,10 +7,11 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
     const { auth } = usePage().props;
 
     const novelTitle = locale === 'en' && novel.title_en ? novel.title_en : novel.title_ar;
+    const chapterTitle = locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title;
 
     return (
         <>
-            <Head title={`${chapter.title} — ${novelTitle}`} />
+            <Head title={`${chapterTitle} — ${novelTitle}`} />
 
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
                 {/* Top Navigation Bar */}
@@ -48,7 +49,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                             )}
                         </div>
                         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white leading-tight">
-                            {chapter.title}
+                            {chapterTitle}
                         </h1>
                     </header>
 
@@ -103,7 +104,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                                         </svg>
                                         <div className={isRtl ? 'text-right' : 'text-left'}>
                                             <span className="block text-xs text-gray-500 dark:text-gray-400">{t('chapter.previousChapter')}</span>
-                                            <span className="block text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{prevChapter.title}</span>
+                                            <span className="block text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                                {locale === 'en' && prevChapter.title_en ? prevChapter.title_en : prevChapter.title}
+                                            </span>
                                         </div>
                                     </Link>
                                 ) : (
@@ -118,7 +121,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                                                     🔒 {t('chapter.lockedBadge')}
                                                 </span>
                                             </div>
-                                            <span className="block text-sm font-medium text-gray-600 dark:text-gray-400">{prevChapter.title}</span>
+                                            <span className="block text-sm font-medium text-gray-600 dark:text-gray-400">
+                                                {locale === 'en' && prevChapter.title_en ? prevChapter.title_en : prevChapter.title}
+                                            </span>
                                         </div>
                                     </div>
                                 )
@@ -149,7 +154,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                                     >
                                         <div className={`flex-1 ${isRtl ? 'text-left' : 'text-right'}`}>
                                             <span className="block text-xs text-gray-500 dark:text-gray-400">{t('chapter.nextChapter')}</span>
-                                            <span className="block text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{nextChapter.title}</span>
+                                            <span className="block text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                                {locale === 'en' && nextChapter.title_en ? nextChapter.title_en : nextChapter.title}
+                                            </span>
                                         </div>
                                         <svg className={`w-5 h-5 text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex-shrink-0 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -164,7 +171,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter }
                                                     🔒 {t('chapter.lockedBadge')}
                                                 </span>
                                             </div>
-                                            <span className="block text-sm font-medium text-gray-600 dark:text-gray-400">{nextChapter.title}</span>
+                                            <span className="block text-sm font-medium text-gray-600 dark:text-gray-400">
+                                                {locale === 'en' && nextChapter.title_en ? nextChapter.title_en : nextChapter.title}
+                                            </span>
                                         </div>
                                         <svg className={`w-5 h-5 text-gray-400 flex-shrink-0 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

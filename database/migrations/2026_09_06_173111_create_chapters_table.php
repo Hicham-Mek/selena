@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('novel_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('chapter_number');
             $table->string('title', 255);
+            $table->string('title_en', 255)->nullable();
             $table->longText('content_text');
             $table->string('audio_path', 500)->nullable();
             $table->boolean('is_preview')->default(false);

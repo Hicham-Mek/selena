@@ -15,10 +15,25 @@ class Chapter extends Model
         'novel_id',
         'chapter_number',
         'title',
+        'title_en',
         'content_text',
         'audio_path',
         'is_preview',
     ];
+
+    /**
+     * Return the localized title based on the active locale.
+     */
+    public function localizedTitle(?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        if ($locale === 'en' && filled($this->title_en)) {
+            return $this->title_en;
+        }
+
+        return $this->title;
+    }
 
     protected $casts = [
         'is_preview' => 'boolean',

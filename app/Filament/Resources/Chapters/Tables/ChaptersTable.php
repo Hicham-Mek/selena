@@ -18,40 +18,52 @@ class ChaptersTable
         return $table
             ->columns([
                 TextColumn::make('novel.title_ar')
-                    ->label('Novel')
+                    ->label(__('admin.novel'))
                     ->sortable()
                     ->searchable()
                     ->limit(30),
+
                 TextColumn::make('chapter_number')
-                    ->label('#')
+                    ->label(__('admin.chapter_number'))
                     ->sortable()
                     ->alignCenter(),
+
                 TextColumn::make('title')
-                    ->label('Title')
+                    ->label(__('admin.chapter_title_ar'))
                     ->searchable()
-                    ->limit(40),
+                    ->limit(30),
+
+                TextColumn::make('title_en')
+                    ->label(__('admin.chapter_title_en'))
+                    ->searchable()
+                    ->limit(30)
+                    ->placeholder('—'),
+
                 IconColumn::make('is_preview')
-                    ->label('Preview')
+                    ->label(__('admin.is_preview'))
                     ->boolean()
                     ->alignCenter(),
+
                 IconColumn::make('audio_path')
-                    ->label('Audio')
+                    ->label(__('admin.has_audio'))
                     ->boolean()
                     ->getStateUsing(fn ($record) => filled($record->audio_path))
                     ->alignCenter(),
+
                 TextColumn::make('created_at')
-                    ->label('Created')
-                    ->dateTime('M d, Y')
+                    ->label(__('admin.created_at'))
+                    ->dateTime('d/m/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('novel_id')
             ->filters([
                 SelectFilter::make('novel_id')
-                    ->label('Novel')
+                    ->label(__('admin.novel'))
                     ->relationship('novel', 'title_ar'),
+
                 TernaryFilter::make('is_preview')
-                    ->label('Preview Only'),
+                    ->label(__('admin.preview_only_filter')),
             ])
             ->recordActions([
                 EditAction::make(),

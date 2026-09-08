@@ -16,35 +16,45 @@ class ChapterForm
     {
         return $schema
             ->components([
-                Section::make('Chapter Details')
+                Section::make(__('admin.chapter_details'))
                     ->schema([
                         Select::make('novel_id')
                             ->relationship('novel', 'title_ar')
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->label('Novel'),
+                            ->label(__('admin.novel_select')),
+
                         TextInput::make('chapter_number')
-                            ->label('Chapter Number')
+                            ->label(__('admin.chapter_number'))
                             ->required()
                             ->numeric()
                             ->minValue(1)
                             ->default(1),
+
                         TextInput::make('title')
-                            ->label('Chapter Title')
+                            ->label(__('admin.chapter_title_ar'))
+                            ->placeholder('مثال: الفصل الأول - البداية')
                             ->required()
                             ->maxLength(255),
+
+                        TextInput::make('title_en')
+                            ->label(__('admin.chapter_title_en'))
+                            ->placeholder('e.g. Chapter 1: The Beginning')
+                            ->maxLength(255),
+
                         Toggle::make('is_preview')
-                            ->label('Free Preview')
-                            ->helperText('If enabled, this chapter will be freely accessible without payment.')
+                            ->label(__('admin.is_preview'))
+                            ->helperText(__('admin.is_preview_helper'))
+                            ->columnSpanFull()
                             ->default(false),
                     ])
                     ->columns(2),
 
-                Section::make('Content')
+                Section::make(__('admin.chapter_content'))
                     ->schema([
                         RichEditor::make('content_text')
-                            ->label('Chapter Text')
+                            ->label(__('admin.content_text'))
                             ->required()
                             ->columnSpanFull()
                             ->toolbarButtons([
@@ -63,11 +73,11 @@ class ChapterForm
                             ]),
                     ]),
 
-                Section::make('Audio')
-                    ->description('Upload an audio narration for this chapter (MP3, M4A, or WAV, max 60MB)')
+                Section::make(__('admin.chapter_audio'))
+                    ->description(__('admin.audio_helper'))
                     ->schema([
                         FileUpload::make('audio_path')
-                            ->label('Audio File')
+                            ->label(__('admin.audio_file'))
                             ->disk('local')
                             ->directory('audio/chapters')
                             ->acceptedFileTypes([
@@ -79,9 +89,8 @@ class ChapterForm
                             ])
                             ->maxSize(61440) // 60MB in KB
                             ->preserveFilenames()
-                            ->helperText('Accepted formats: .mp3, .m4a, .wav — Max size: 60MB'),
-                    ])
-                    ->collapsed(),
+                            ->helperText(__('admin.audio_helper')),
+                    ]),
             ]);
     }
 }
