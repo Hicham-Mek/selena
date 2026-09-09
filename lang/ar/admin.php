@@ -69,4 +69,30 @@ return [
     'order_rejected_notification' => 'تم رفض الطلب.',
     'download_receipt' => 'تحميل الوصل',
     'receipt_link_expires' => 'هذا الرابط صالح لمدة 10 دقائق فقط.',
+
+    // Users (M8)
+    'users' => 'المستخدمين',
+    'user' => 'مستخدم',
+    'user_info' => 'معلومات المستخدم',
+    'user_name' => 'الاسم',
+    'user_email' => 'البريد الإلكتروني',
+    'user_password' => 'كلمة المرور',
+    'user_password_helper' => 'اتركه فارغاً للاحتفاظ بكلمة المرور الحالية.',
+    'user_is_admin' => 'صلاحيات الإدارة',
+    'user_is_admin_helper' => 'يمنح حق الوصول إلى لوحة تحكم الإدارة.',
+    'user_purchased_novels' => 'الروايات المشتراة',
+
+    // Dashboard Stats (M8)
+    'stat_total_users' => 'إجمالي المستخدمين',
+    'stat_registered_customers' => 'العملاء المسجلين',
+    'stat_novels' => 'الروايات',
+    'stat_published_count' => ':count رواية منشورة',
+    'stat_pending_orders' => 'الطلبات المعلقة',
+    'stat_awaiting_action' => 'بانتظار الإجراء',
+    'stat_approved_orders' => 'الطلبات المقبولة',
+    'stat_completed_sales' => 'المبيعات المكتملة',
+
+    // Validation (M8)
+    'publish_requires_chapters' => 'لا يمكن نشر رواية لا تحتوي على أي فصول.',
+    'publish_requires_chapters_new' => 'يرجى حفظ الرواية أولاً وإضافة فصول قبل النشر.',
 ];

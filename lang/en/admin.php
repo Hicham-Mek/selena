@@ -69,4 +69,30 @@ return [
     'order_rejected_notification' => 'Order rejected.',
     'download_receipt' => 'Download Receipt',
     'receipt_link_expires' => 'This link expires in 10 minutes.',
+
+    // Users (M8)
+    'users' => 'Users',
+    'user' => 'User',
+    'user_info' => 'User Information',
+    'user_name' => 'Name',
+    'user_email' => 'Email',
+    'user_password' => 'Password',
+    'user_password_helper' => 'Leave blank to keep the current password.',
+    'user_is_admin' => 'Admin Access',
+    'user_is_admin_helper' => 'Grants access to this Filament admin panel.',
+    'user_purchased_novels' => 'Purchased Novels',
+
+    // Dashboard Stats (M8)
+    'stat_total_users' => 'Total Users',
+    'stat_registered_customers' => 'Registered Customers',
+    'stat_novels' => 'Novels',
+    'stat_published_count' => ':count Published',
+    'stat_pending_orders' => 'Pending Orders',
+    'stat_awaiting_action' => 'Awaiting Action',
+    'stat_approved_orders' => 'Approved Orders',
+    'stat_completed_sales' => 'Completed Sales',
+
+    // Validation (M8)
+    'publish_requires_chapters' => 'Cannot publish a novel that has no chapters.',
+    'publish_requires_chapters_new' => 'Please save the novel first and add chapters before publishing.',
 ];
