@@ -77,7 +77,18 @@ class NovelForm
                                 'published' => __('admin.status_published'),
                             ])
                             ->default('draft')
-                            ->required(),
+                            ->required()
+                            ->rules([
+                                fn ($get, $record) => function (string $attribute, $value, \Closure $fail) use ($record) {
+                                    if ($value === 'published') {
+                                        if (! $record) {
+                                            $fail(__('admin.publish_requires_chapters_new'));
+                                        } elseif ($record->chapters()->count() === 0) {
+                                            $fail(__('admin.publish_requires_chapters'));
+                                        }
+                                    }
+                                },
+                            ]),
 
                         FileUpload::make('cover_image_path')
                             ->label(__('admin.cover_image'))

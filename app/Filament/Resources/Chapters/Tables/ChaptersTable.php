@@ -56,7 +56,8 @@ class ChaptersTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('novel_id')
+            ->defaultSort('chapter_number', 'asc')
+            ->defaultGroup('novel.title_ar')
             ->filters([
                 SelectFilter::make('novel_id')
                     ->label(__('admin.novel'))

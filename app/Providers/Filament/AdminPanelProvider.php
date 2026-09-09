@@ -39,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                \App\Filament\Widgets\DashboardStatsOverview::class,
             ])
             ->userMenuItems([
                 \Filament\Navigation\MenuItem::make()
