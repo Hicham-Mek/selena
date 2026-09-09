@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Novel;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
@@ -25,7 +27,8 @@ class ChapterController extends Controller
         }]);
 
         // Determine purchase status for the authenticated user
-        $user = auth()->user();
+        /** @var User|null $user */
+        $user = Auth::user();
         $purchaseStatus = null;
 
         if ($user) {
@@ -78,7 +81,8 @@ class ChapterController extends Controller
             abort(404);
         }
 
-        $user = auth()->user();
+        /** @var User|null $user */
+        $user = Auth::user();
 
         // ── M6 Authorization Boundary ──────────────────────────────────────────
         $isAuthorized = $chapter->is_preview
@@ -150,7 +154,8 @@ class ChapterController extends Controller
      */
     public function streamAudio(Request $request, Chapter $chapter): StreamedResponse
     {
-        $user = auth()->user();
+        /** @var User|null $user */
+        $user = Auth::user();
 
         // Double-check authorization — signed URL alone is not enough
         $isAuthorized = $chapter->is_preview

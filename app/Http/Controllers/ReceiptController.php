@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -14,19 +17,23 @@ class ReceiptController extends Controller
      */
     public function show(Order $order): StreamedResponse
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
 
         // Only the order owner or an admin can view receipts
         if ($order->user_id !== $user->id && ! $user->isAdmin()) {
             abort(403);
         }
 
-        if (! $order->receipt_path || ! Storage::disk('local')->exists($order->receipt_path)) {
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('local');
+
+        if (! $order->receipt_path || ! $disk->exists($order->receipt_path)) {
             abort(404);
         }
 
-        $path = Storage::disk('local')->path($order->receipt_path);
-        $mimeType = Storage::disk('local')->mimeType($order->receipt_path);
+        $path = $disk->path($order->receipt_path);
+        $mimeType = $disk->mimeType($order->receipt_path);
 
         return response()->stream(function () use ($path) {
             $stream = fopen($path, 'rb');

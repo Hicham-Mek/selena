@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Novel;
 use App\Models\Order;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -15,9 +18,10 @@ class OrderController extends Controller
     /**
      * Show the purchase page with payment instructions.
      */
-    public function create(Novel $novel): Response
+    public function create(Novel $novel): Response|RedirectResponse
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
 
         // Check if novel is published
         if (! $novel->isPublished()) {
@@ -26,7 +30,7 @@ class OrderController extends Controller
 
         // Check if user already owns this novel
         if ($user->ownsNovel($novel)) {
-            return redirect()->route('novels.show', $novel->slug)
+            return  redirect()->route('novels.show', $novel->slug)
                 ->with('info', 'You already own this novel.');
         }
 
@@ -53,6 +57,7 @@ class OrderController extends Controller
                 'baridimob_rip' => config('payment.baridimob.rip'),
                 'account_holder' => config('payment.account_holder'),
                 'reference_instructions' => config('payment.reference_instructions'),
+                'whatsapp_number' => config('payment.whatsapp_number'),
             ],
         ]);
     }
@@ -62,7 +67,8 @@ class OrderController extends Controller
      */
     public function store(Request $request, Novel $novel)
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
 
         // Validate receipt if provided
         $request->validate([
@@ -111,7 +117,8 @@ class OrderController extends Controller
      */
     public function show(Order $order): Response
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
 
         // Ensure the user owns this order
         if ($order->user_id !== $user->id) {
@@ -137,6 +144,7 @@ class OrderController extends Controller
                 'cover_image_path' => $order->novel->cover_image_path,
                 'price_dzd' => $order->novel->price_dzd,
             ],
+            'whatsappNumber' => config('payment.whatsapp_number'),
         ]);
     }
 
@@ -145,7 +153,8 @@ class OrderController extends Controller
      */
     public function uploadReceipt(Request $request, Order $order)
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
 
         // Ensure the user owns this order
         if ($order->user_id !== $user->id) {
