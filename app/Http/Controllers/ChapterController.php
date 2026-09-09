@@ -108,6 +108,8 @@ class ChapterController extends Controller
         $prevChapter = $chapter->previousChapter();
         $nextChapter = $chapter->nextChapter();
 
+        $isOwned = $user !== null && $user->hasEntitlementFor($novel->id);
+
         return Inertia::render('Chapters/Show', [
             'chapter' => [
                 'id'             => $chapter->id,
@@ -124,6 +126,7 @@ class ChapterController extends Controller
                 'title_en' => $novel->title_en,
                 'slug'     => $novel->slug,
             ],
+            'isOwned'     => $isOwned,
             'audio_url'   => $audioUrl,
             'prevChapter' => $prevChapter ? [
                 'id'             => $prevChapter->id,

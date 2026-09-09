@@ -2,7 +2,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useTranslation } from '@/translations';
 import { usePage } from '@inertiajs/react';
 
-export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, audio_url }) {
+export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, audio_url, isOwned = false }) {
     const { t, locale, isRtl } = useTranslation();
     const { auth } = usePage().props;
 
@@ -115,7 +115,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
                             {/* Previous Chapter */}
                             {prevChapter ? (
-                                prevChapter.is_preview ? (
+                                (prevChapter.is_preview || isOwned) ? (
                                     <Link
                                         href={route('chapters.show', { novel: novel.slug, chapter: prevChapter.id })}
                                         className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50 dark:hover:bg-gray-700/50 transition-all group flex-1 shadow-sm"
@@ -165,7 +165,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
 
                             {/* Next Chapter */}
                             {nextChapter ? (
-                                nextChapter.is_preview ? (
+                                (nextChapter.is_preview || isOwned) ? (
                                     <Link
                                         href={route('chapters.show', { novel: novel.slug, chapter: nextChapter.id })}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50 dark:hover:bg-gray-700/50 transition-all group flex-1 shadow-sm ${isRtl ? 'flex-row-reverse text-left' : 'flex-row text-right'}`}

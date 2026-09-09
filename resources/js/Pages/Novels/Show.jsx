@@ -126,62 +126,76 @@ export default function NovelShow({ novel, purchaseStatus }) {
                             </h2>
                         </div>
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                            {novel.chapters.map((chapter) => (
-                                <li key={chapter.id}>
-                                    {chapter.is_preview ? (
-                                        <Link
-                                            href={route('chapters.show', {
-                                                novel: novel.slug,
-                                                chapter: chapter.id,
-                                            })}
-                                            className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 text-sm font-bold">
-                                                    {chapter.chapter_number}
-                                                </span>
-                                                <span className="text-gray-900 dark:text-white font-medium">
-                                                    {locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title}
-                                                </span>
-                                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                                    {t('novel.freePreview')}
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-gray-400">
-                                                {chapter.has_audio && (
-                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-4-4m4 4l4-4M18.364 5.636a9 9 0 010 12.728" />
+                            {novel.chapters.map((chapter) => {
+                                const isOwned = purchaseStatus === 'owned';
+                                const canAccess = chapter.is_preview || isOwned;
+
+                                return (
+                                    <li key={chapter.id}>
+                                        {canAccess ? (
+                                            <Link
+                                                href={route('chapters.show', {
+                                                    novel: novel.slug,
+                                                    chapter: chapter.id,
+                                                })}
+                                                className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 text-sm font-bold">
+                                                        {chapter.chapter_number}
+                                                    </span>
+                                                    <span className="text-gray-900 dark:text-white font-medium">
+                                                        {locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title}
+                                                    </span>
+                                                    {chapter.is_preview ? (
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                            {t('novel.freePreview')}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                            </svg>
+                                                            {t('chapter.purchasedBadge')}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div className="flex items-center gap-2 text-gray-400">
+                                                    {chapter.has_audio && (
+                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-4-4m4 4l4-4M18.364 5.636a9 9 0 010 12.728" />
+                                                        </svg>
+                                                    )}
+                                                    <svg className={`w-5 h-5 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                                     </svg>
-                                                )}
-                                                <svg className={`w-5 h-5 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </div>
-                                        </Link>
-                                    ) : (
-                                        <div className="flex items-center justify-between px-6 py-4 opacity-60">
-                                            <div className="flex items-center gap-3">
-                                                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm font-bold">
-                                                    {chapter.chapter_number}
-                                                </span>
-                                                <span className="text-gray-700 dark:text-gray-300 font-medium">
-                                                    {locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title}
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-gray-400">
-                                                {chapter.has_audio && (
+                                                </div>
+                                            </Link>
+                                        ) : (
+                                            <div className="flex items-center justify-between px-6 py-4 opacity-60">
+                                                <div className="flex items-center gap-3">
+                                                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm font-bold">
+                                                        {chapter.chapter_number}
+                                                    </span>
+                                                    <span className="text-gray-700 dark:text-gray-300 font-medium">
+                                                        {locale === 'en' && chapter.title_en ? chapter.title_en : chapter.title}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-gray-400">
+                                                    {chapter.has_audio && (
+                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-4-4m4 4l4-4M18.364 5.636a9 9 0 010 12.728" />
+                                                        </svg>
+                                                    )}
                                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-4-4m4 4l4-4M18.364 5.636a9 9 0 010 12.728" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                                     </svg>
-                                                )}
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                </svg>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
-                                </li>
-                            ))}
+                                        )}
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 </div>
