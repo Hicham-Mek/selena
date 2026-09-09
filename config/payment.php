@@ -23,6 +23,8 @@ return [
 
     'account_holder' => env('PAYMENT_ACCOUNT_HOLDER', 'اسم صاحب الحساب'),
 
+    'whatsapp_number' => env('PAYMENT_WHATSAPP_NUMBER', '+213 555 000 000'),
+
     'reference_instructions' => env(
         'PAYMENT_REFERENCE_INSTRUCTIONS',
         'اكتب اسمك الكامل وعنوان الرواية في خانة الملاحظات'
