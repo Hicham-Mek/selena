@@ -1,11 +1,11 @@
 import { Head, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { useTranslation } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 import { usePage } from '@inertiajs/react';
 
 export default function NovelShow({ novel, purchaseStatus }) {
-    const { t, locale, isRtl } = useTranslation();
+    const { t, locale, isRtl } = useTranslate();
     const { auth } = usePage().props;
 
     const title = locale === 'en' && novel.title_en ? novel.title_en : novel.title_ar;

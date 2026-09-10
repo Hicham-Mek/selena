@@ -1,9 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { useTranslation } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 import { usePage } from '@inertiajs/react';
 
 export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, audio_url, isOwned = false }) {
-    const { t, locale, isRtl } = useTranslation();
+    const { t, locale, isRtl } = useTranslate();
     const { auth } = usePage().props;
 
     const novelTitle   = locale === 'en' && novel.title_en   ? novel.title_en   : novel.title_ar;
@@ -22,7 +22,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
         <>
             <Head title={`${chapterTitle} — ${novelTitle}`} />
 
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900" onContextMenu={(e) => e.preventDefault()}>
                 {/* Top Navigation Bar */}
                 <div className="sticky top-0 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,6 +89,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                             <audio
                                 key={audio_url}
                                 controls
+                                controlsList="nodownload"
                                 preload="metadata"
                                 className="w-full"
                                 src={audio_url}
@@ -101,12 +102,13 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
 
                     {/* Chapter Text (Rich HTML) */}
                     <div
-                        className="prose prose-lg dark:prose-invert max-w-none
+                        className="select-none text-right prose prose-lg dark:prose-invert max-w-none
                             prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
                             prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed
                             prose-blockquote:border-indigo-500 prose-blockquote:text-gray-600 dark:prose-blockquote:text-gray-400
                             prose-strong:text-gray-900 dark:prose-strong:text-white
                             prose-a:text-indigo-600 dark:prose-a:text-indigo-400"
+                        dir="rtl"
                         dangerouslySetInnerHTML={{ __html: chapter.content_text }}
                     />
 
@@ -123,7 +125,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                                         <svg className={`w-5 h-5 text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex-shrink-0 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                         </svg>
-                                        <div className={isRtl ? 'text-right' : 'text-left'}>
+                                        <div className="text-start">
                                             <span className="block text-xs text-gray-500 dark:text-gray-400">{t('chapter.previousChapter')}</span>
                                             <span className="block text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                                                 {locale === 'en' && prevChapter.title_en ? prevChapter.title_en : prevChapter.title}
@@ -135,7 +137,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                                         <svg className={`w-5 h-5 text-gray-400 flex-shrink-0 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                         </svg>
-                                        <div className={isRtl ? 'text-right' : 'text-left'}>
+                                        <div className="text-start">
                                             <div className="flex items-center gap-1.5 mb-0.5">
                                                 <span className="text-xs text-gray-500 dark:text-gray-400">{t('chapter.previousChapter')}</span>
                                                 <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300">
@@ -168,9 +170,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                                 (nextChapter.is_preview || isOwned) ? (
                                     <Link
                                         href={route('chapters.show', { novel: novel.slug, chapter: nextChapter.id })}
-                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50 dark:hover:bg-gray-700/50 transition-all group flex-1 shadow-sm ${isRtl ? 'flex-row-reverse text-left' : 'flex-row text-right'}`}
+                                    className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all group flex-1 shadow-sm text-end"
                                     >
-                                        <div className={`flex-1 ${isRtl ? 'text-left' : 'text-right'}`}>
+                                    <div className="flex-1 text-end">
                                             <span className="block text-xs text-gray-500 dark:text-gray-400">{t('chapter.nextChapter')}</span>
                                             <span className="block text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                                                 {locale === 'en' && nextChapter.title_en ? nextChapter.title_en : nextChapter.title}
@@ -181,9 +183,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                                         </svg>
                                     </Link>
                                 ) : (
-                                    <div className={`flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 opacity-70 flex-1 ${isRtl ? 'flex-row-reverse text-left' : 'flex-row text-right'}`}>
-                                        <div className={`flex-1 ${isRtl ? 'text-left' : 'text-right'}`}>
-                                            <div className={`flex items-center gap-1.5 mb-0.5 ${isRtl ? 'justify-start' : 'justify-end'}`}>
+                                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 opacity-70 flex-1 text-end">
+                                    <div className="flex-1 text-end">
+                                            <div className="flex items-center gap-1.5 mb-0.5 justify-end">
                                                 <span className="text-xs text-gray-500 dark:text-gray-400">{t('chapter.nextChapter')}</span>
                                                 <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300">
                                                     🔒 {t('chapter.lockedBadge')}
@@ -201,9 +203,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                             ) : (
                                 <Link
                                     href={route('novels.show', { novel: novel.slug })}
-                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all group flex-1 shadow-sm ${isRtl ? 'flex-row-reverse text-left' : 'flex-row text-right'}`}
+                                    className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all group flex-1 shadow-sm text-end"
                                 >
-                                    <div className={`flex-1 ${isRtl ? 'text-left' : 'text-right'}`}>
+                                    <div className="flex-1 text-end">
                                         <span className="block text-xs text-gray-500 dark:text-gray-400">{novelTitle}</span>
                                         <span className="block text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{t('chapter.backToNovel')}</span>
                                     </div>

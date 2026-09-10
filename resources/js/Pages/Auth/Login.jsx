@@ -5,9 +5,10 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { t } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 
 export default function Login({ status, canResetPassword }) {
+    const { t } = useTranslate();
     const { locale = 'ar' } = usePage().props;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,11 +27,11 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title={t('auth.loginTitle', locale)} />
+            <Head title={t('auth.loginTitle')} />
 
             <div className="mb-6 text-center">
                 <h1 className="text-2xl font-bold text-gray-900">
-                    {t('auth.loginTitle', locale)}
+                    {t('auth.loginTitle')}
                 </h1>
             </div>
 
@@ -42,14 +43,14 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="email" value={t('auth.email', locale)} />
+                    <InputLabel htmlFor="email" value={t('auth.email')} />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        placeholder={t('auth.emailPlaceholder', locale)}
+                        placeholder={t('auth.emailPlaceholder')}
                         className="mt-1 block w-full"
                         autoComplete="username"
                         isFocused={true}
@@ -60,14 +61,14 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value={t('auth.password', locale)} />
+                    <InputLabel htmlFor="password" value={t('auth.password')} />
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        placeholder={t('auth.passwordPlaceholder', locale)}
+                        placeholder={t('auth.passwordPlaceholder')}
                         className="mt-1 block w-full"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
@@ -86,7 +87,7 @@ export default function Login({ status, canResetPassword }) {
                             }
                         />
                         <span className="ms-2 text-sm text-gray-600">
-                            {t('auth.rememberMe', locale)}
+                            {t('auth.rememberMe')}
                         </span>
                     </label>
 
@@ -95,7 +96,7 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
-                            {t('auth.forgotPassword', locale)}
+                            {t('auth.forgotPassword')}
                         </Link>
                     )}
                 </div>
@@ -105,11 +106,11 @@ export default function Login({ status, canResetPassword }) {
                         href={route('register')}
                         className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        {t('auth.dontHaveAccount', locale)}
+                        {t('auth.dontHaveAccount')}
                     </Link>
 
                     <PrimaryButton disabled={processing}>
-                        {t('auth.loginButton', locale)}
+                        {t('auth.loginButton')}
                     </PrimaryButton>
                 </div>
             </form>

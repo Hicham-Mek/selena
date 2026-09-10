@@ -1,10 +1,11 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { t } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
 import LanguageToggle from '@/Components/LanguageToggle';
 
 export default function Index({ auth, novels }) {
+    const { t } = useTranslate();
     const { locale = 'ar' } = usePage().props;
 
     const Layout = auth.user ? AuthenticatedLayout : GuestLayout;
@@ -15,7 +16,7 @@ export default function Index({ auth, novels }) {
     
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-black/95 text-gray-900 dark:text-gray-100 font-sans">
-            <Head title={t('catalog.title', locale)} />
+            <Head title={t('catalog.title')} />
 
             {/* Navigation Bar */}
             <header className="bg-white dark:bg-zinc-900 shadow-sm border-b border-gray-100 dark:border-zinc-800">
@@ -35,7 +36,7 @@ export default function Index({ auth, novels }) {
                                     href={route('dashboard')}
                                     className="text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                 >
-                                    {t('nav.dashboard', locale)}
+                                    {t('nav.dashboard')}
                                 </Link>
                             ) : (
                                 <>
@@ -43,13 +44,13 @@ export default function Index({ auth, novels }) {
                                         href={route('login')}
                                         className="text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                     >
-                                        {t('nav.login', locale)}
+                                        {t('nav.login')}
                                     </Link>
                                     <Link
                                         href={route('register')}
                                         className="text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                     >
-                                        {t('nav.register', locale)}
+                                        {t('nav.register')}
                                     </Link>
                                 </>
                             )}
@@ -62,10 +63,10 @@ export default function Index({ auth, novels }) {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="mb-10 text-center">
                     <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#FF2D20] to-red-400 sm:text-5xl">
-                        {t('catalog.title', locale)}
+                        {t('catalog.title')}
                     </h1>
                     <p className="mt-4 text-xl text-gray-500 dark:text-gray-400">
-                        {t('catalog.subtitle', locale) || "Discover and read our latest publications"}
+                        {t('catalog.subtitle') || "Discover and read our latest publications"}
                     </p>
                 </div>
 
@@ -104,7 +105,7 @@ export default function Index({ auth, novels }) {
                                     </p>
                                     <div className="mt-4 pt-4 border-t border-gray-100 dark:border-zinc-800">
                                         <span className="text-[#FF2D20] font-medium text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                                            {t('catalog.read_more', locale)} <span aria-hidden="true">&rarr;</span>
+                                            {t('catalog.read_more')} <span aria-hidden="true">&rarr;</span>
                                         </span>
                                     </div>
                                 </div>

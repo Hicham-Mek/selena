@@ -4,9 +4,10 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { t } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 
 export default function ResetPassword({ token, email }) {
+    const { t } = useTranslate();
     const { locale = 'ar' } = usePage().props;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,24 +27,24 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <GuestLayout>
-            <Head title={t('auth.resetPasswordTitle', locale)} />
+            <Head title={t('auth.resetPasswordTitle')} />
 
             <div className="mb-6 text-center">
                 <h1 className="text-2xl font-bold text-gray-900">
-                    {t('auth.resetPasswordTitle', locale)}
+                    {t('auth.resetPasswordTitle')}
                 </h1>
             </div>
 
             <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="email" value={t('auth.email', locale)} />
+                    <InputLabel htmlFor="email" value={t('auth.email')} />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        placeholder={t('auth.emailPlaceholder', locale)}
+                        placeholder={t('auth.emailPlaceholder')}
                         className="mt-1 block w-full"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
@@ -53,14 +54,14 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value={t('auth.password', locale)} />
+                    <InputLabel htmlFor="password" value={t('auth.password')} />
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        placeholder={t('auth.passwordPlaceholder', locale)}
+                        placeholder={t('auth.passwordPlaceholder')}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                         isFocused={true}
@@ -73,7 +74,7 @@ export default function ResetPassword({ token, email }) {
                 <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value={t('auth.confirmPassword', locale)}
+                        value={t('auth.confirmPassword')}
                     />
 
                     <TextInput
@@ -81,7 +82,7 @@ export default function ResetPassword({ token, email }) {
                         id="password_confirmation"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        placeholder={t('auth.confirmPasswordPlaceholder', locale)}
+                        placeholder={t('auth.confirmPasswordPlaceholder')}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
@@ -97,7 +98,7 @@ export default function ResetPassword({ token, email }) {
 
                 <div className="flex items-center justify-end pt-2">
                     <PrimaryButton disabled={processing}>
-                        {t('auth.resetPasswordButton', locale)}
+                        {t('auth.resetPasswordButton')}
                     </PrimaryButton>
                 </div>
             </form>

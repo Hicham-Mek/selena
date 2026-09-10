@@ -1,9 +1,9 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useTranslation } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 import { useState } from 'react';
 
 export default function Show({ order, novel, whatsappNumber }) {
-    const { t, locale, isRtl } = useTranslation();
+    const { t, locale, isRtl } = useTranslate();
     const title = locale === 'en' && novel.title_en ? novel.title_en : novel.title_ar;
     const [dragOver, setDragOver] = useState(false);
 

@@ -4,9 +4,10 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { t } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 
 export default function ConfirmPassword() {
+    const { t } = useTranslate();
     const { locale = 'ar' } = usePage().props;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -23,28 +24,28 @@ export default function ConfirmPassword() {
 
     return (
         <GuestLayout>
-            <Head title={t('auth.confirmPasswordTitle', locale)} />
+            <Head title={t('auth.confirmPasswordTitle')} />
 
             <div className="mb-6 text-center">
                 <h1 className="text-2xl font-bold text-gray-900">
-                    {t('auth.confirmPasswordTitle', locale)}
+                    {t('auth.confirmPasswordTitle')}
                 </h1>
             </div>
 
             <div className="mb-4 text-sm text-gray-600">
-                {t('auth.confirmPasswordDescription', locale)}
+                {t('auth.confirmPasswordDescription')}
             </div>
 
             <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="password" value={t('auth.password', locale)} />
+                    <InputLabel htmlFor="password" value={t('auth.password')} />
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        placeholder={t('auth.passwordPlaceholder', locale)}
+                        placeholder={t('auth.passwordPlaceholder')}
                         className="mt-1 block w-full"
                         isFocused={true}
                         onChange={(e) => setData('password', e.target.value)}
@@ -55,7 +56,7 @@ export default function ConfirmPassword() {
 
                 <div className="flex items-center justify-end pt-2">
                     <PrimaryButton disabled={processing}>
-                        {t('auth.confirmButton', locale)}
+                        {t('auth.confirmButton')}
                     </PrimaryButton>
                 </div>
             </form>

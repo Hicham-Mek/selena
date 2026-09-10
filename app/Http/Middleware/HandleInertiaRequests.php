@@ -42,6 +42,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $locale = app()->getLocale();
+        $translationsPath = base_path("lang/{$locale}.json");
+        $translations = file_exists($translationsPath) ? json_decode(file_get_contents($translationsPath), true) : [];
 
         return [
             ...parent::share($request),
@@ -50,6 +52,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'locale' => $locale,
             'dir' => $locale === 'ar' ? 'rtl' : 'ltr',
+            'translations' => $translations,
         ];
     }
 }

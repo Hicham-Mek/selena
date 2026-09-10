@@ -4,9 +4,10 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { t } from '@/translations';
+import useTranslate from '@/Hooks/useTranslate';
 
 export default function ForgotPassword({ status }) {
+    const { t } = useTranslate();
     const { locale = 'ar' } = usePage().props;
 
     const { data, setData, post, processing, errors } = useForm({
@@ -21,16 +22,16 @@ export default function ForgotPassword({ status }) {
 
     return (
         <GuestLayout>
-            <Head title={t('auth.forgotPasswordTitle', locale)} />
+            <Head title={t('auth.forgotPasswordTitle')} />
 
             <div className="mb-6 text-center">
                 <h1 className="text-2xl font-bold text-gray-900">
-                    {t('auth.forgotPasswordTitle', locale)}
+                    {t('auth.forgotPasswordTitle')}
                 </h1>
             </div>
 
             <div className="mb-4 text-sm text-gray-600">
-                {t('auth.forgotPasswordDescription', locale)}
+                {t('auth.forgotPasswordDescription')}
             </div>
 
             {status && (
@@ -41,14 +42,14 @@ export default function ForgotPassword({ status }) {
 
             <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="email" value={t('auth.email', locale)} />
+                    <InputLabel htmlFor="email" value={t('auth.email')} />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        placeholder={t('auth.emailPlaceholder', locale)}
+                        placeholder={t('auth.emailPlaceholder')}
                         className="mt-1 block w-full"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
@@ -62,11 +63,11 @@ export default function ForgotPassword({ status }) {
                         href={route('login')}
                         className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        {t('auth.backToLogin', locale)}
+                        {t('auth.backToLogin')}
                     </Link>
 
                     <PrimaryButton disabled={processing}>
-                        {t('auth.emailPasswordResetLink', locale)}
+                        {t('auth.emailPasswordResetLink')}
                     </PrimaryButton>
                 </div>
             </form>
