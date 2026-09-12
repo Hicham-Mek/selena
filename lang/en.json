@@ -71,7 +71,9 @@
         "attachReceipt": "Attach Receipt",
         "repurchase": "Re-purchase",
         "viewDetails": "Order Details",
-        "rejectionReasonPrefix": "Reason:"
+        "rejectionReasonPrefix": "Reason:",
+        "discover": "Discover Novels",
+        "discoverSubtitle": "Expand your library with our latest publications"
     },
     "novel": {
         "published": "Published",
@@ -141,7 +143,9 @@
         "title": "Browse Novels",
         "subtitle": "Discover and read our latest publications",
         "read_more": "Read more",
-        "browse_novels": "Browse Novels"
+        "browse_novels": "Browse Novels",
+        "empty_title": "No novels found",
+        "empty_subtitle": "We couldn't find any published novels at the moment."
     },
     "welcome": {
         "title": "Welcome to Selena",
@@ -149,5 +153,20 @@
         "login": "Log in",
         "register": "Register",
         "dashboard": "Go to Dashboard"
+    },
+    "profile": {
+        "title": "Profile",
+        "profileInformation": "Profile Information",
+        "profileInformationDesc": "Update your account's profile information and email address.",
+        "saved": "Saved.",
+        "save": "Save",
+        "updatePassword": "Update Password",
+        "updatePasswordDesc": "Ensure your account is using a long, random password to stay secure.",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "deleteAccount": "Delete Account",
+        "deleteAccountDesc": "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.",
+        "deleteAccountConfirm": "Are you sure you want to delete your account?",
+        "cancel": "Cancel"
     }
 }

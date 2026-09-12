@@ -71,7 +71,9 @@
         "attachReceipt": "إرفاق الإيصال",
         "repurchase": "إعادة الشراء",
         "viewDetails": "تفاصيل الطلب",
-        "rejectionReasonPrefix": "السبب:"
+        "rejectionReasonPrefix": "السبب:",
+        "discover": "استكشف الروايات",
+        "discoverSubtitle": "قم بتوسيع مكتبتك بأحدث إصداراتنا"
     },
     "novel": {
         "published": "منشور",
@@ -141,7 +143,9 @@
         "title": "تصفح الروايات",
         "subtitle": "اكتشف واقرأ أحدث إصداراتنا",
         "read_more": "اقرأ المزيد",
-        "browse_novels": "تصفح الروايات"
+        "browse_novels": "تصفح الروايات",
+        "empty_title": "لا توجد روايات",
+        "empty_subtitle": "لم نتمكن من العثور على أي روايات منشورة في الوقت الحالي."
     },
     "welcome": {
         "title": "مرحباً بك في سيلينا",
@@ -149,5 +153,20 @@
         "login": "تسجيل الدخول",
         "register": "إنشاء حساب جديد",
         "dashboard": "الذهاب إلى لوحة التحكم"
+    },
+    "profile": {
+        "title": "الملف الشخصي",
+        "profileInformation": "معلومات الملف الشخصي",
+        "profileInformationDesc": "قم بتحديث معلومات الملف الشخصي لحسابك وعنوان البريد الإلكتروني.",
+        "saved": "تم الحفظ.",
+        "save": "حفظ",
+        "updatePassword": "تحديث كلمة المرور",
+        "updatePasswordDesc": "تأكد من استخدام حسابك لكلمة مرور طويلة وعشوائية ليبقى آمناً.",
+        "currentPassword": "كلمة المرور الحالية",
+        "newPassword": "كلمة المرور الجديدة",
+        "deleteAccount": "حذف الحساب",
+        "deleteAccountDesc": "بمجرد حذف حسابك، سيتم حذف جميع الموارد والبيانات الخاصة به بشكل دائم. قبل حذف حسابك، يرجى تنزيل أي بيانات أو معلومات ترغب في الاحتفاظ بها.",
+        "deleteAccountConfirm": "هل أنت متأكد أنك تريد حذف حسابك؟",
+        "cancel": "إلغاء"
     }
 }
