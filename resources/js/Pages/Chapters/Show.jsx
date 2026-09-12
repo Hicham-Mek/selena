@@ -1,6 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import useTranslate from '@/Hooks/useTranslate';
 import { usePage } from '@inertiajs/react';
+import DOMPurify from 'dompurify';
 
 export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, audio_url, isOwned = false }) {
     const { t, locale, isRtl } = useTranslate();
@@ -109,7 +110,7 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
                             prose-strong:text-gray-900 dark:prose-strong:text-white
                             prose-a:text-indigo-600 dark:prose-a:text-indigo-400"
                         dir="rtl"
-                        dangerouslySetInnerHTML={{ __html: chapter.content_text }}
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(chapter.content_text) }}
                     />
 
                     {/* Chapter Navigation */}

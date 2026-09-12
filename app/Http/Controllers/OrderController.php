@@ -82,11 +82,13 @@ class OrderController extends Controller
 
         // Use a transaction with locking to prevent race conditions
         $order = DB::transaction(function () use ($user, $novel, $request) {
-            // Check for existing active order or ownership (with lock)
+            // 1. Lock the user record first to serialize concurrent requests
+            User::where('id', $user->id)->lockForUpdate()->first();
+
+            // 2. Check for existing active order or ownership
             $existingActive = Order::where('user_id', $user->id)
                 ->where('novel_id', $novel->id)
                 ->whereIn('status', [Order::STATUS_PENDING, Order::STATUS_UNDER_REVIEW, Order::STATUS_APPROVED])
-                ->lockForUpdate()
                 ->first();
 
             if ($existingActive) {
