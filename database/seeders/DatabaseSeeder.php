@@ -38,5 +38,7 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '+1987654321',
             'whatsapp_enabled' => true,
         ]);
+        // Seed example novels and chapters for testing
+        $this->call(NovelSeeder::class);
     }
 }

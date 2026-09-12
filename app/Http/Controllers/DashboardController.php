@@ -20,11 +20,14 @@ class DashboardController extends Controller
 
         // 1. Library (Entitlements)
         // Fetch all novels the user has an active entitlement for
-        $library = Entitlement::with('novel:id,slug,title_ar,title_en,cover_image_path')
+        $library = Entitlement::with(['novel:id,slug,title_ar,title_en,cover_image_path', 'novel.chapters' => function ($query) {
+            $query->orderBy('chapter_number')->take(1);
+        }])
             ->where('user_id', $user->id)
             ->get()
             ->map(function ($entitlement) {
                 $novel = $entitlement->novel;
+                $firstChapter = $novel->chapters->first();
                 return [
                     'id' => $novel->id,
                     'slug' => $novel->slug,
@@ -33,6 +36,7 @@ class DashboardController extends Controller
                     'cover_url' => $novel->cover_image_path
                         ? Storage::url($novel->cover_image_path)
                         : null,
+                    'first_chapter_id' => $firstChapter ? $firstChapter->id : null,
                 ];
             });
 
@@ -64,10 +68,31 @@ class DashboardController extends Controller
             'phone_number' => $user->profile->phone_number ?? '',
         ];
 
+        // 4. Discover Catalog (Published novels not in library)
+        $ownedNovelIds = $library->pluck('id')->toArray();
+        $discover = \App\Models\Novel::published()
+            ->whereNotIn('id', $ownedNovelIds)
+            ->latest()
+            ->take(4)
+            ->get()
+            ->map(function ($novel) {
+                return [
+                    'id' => $novel->id,
+                    'slug' => $novel->slug,
+                    'title_ar' => $novel->title_ar,
+                    'title_en' => $novel->title_en,
+                    'price_dzd' => $novel->price_dzd,
+                    'cover_url' => $novel->cover_image_path
+                        ? Storage::url($novel->cover_image_path)
+                        : null,
+                ];
+            });
+
         return Inertia::render('Dashboard', [
             'library' => $library,
             'orders' => $orders,
             'profile' => $profileData,
+            'discover' => $discover,
         ]);
     }
 }

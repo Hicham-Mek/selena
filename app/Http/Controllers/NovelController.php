@@ -27,7 +27,7 @@ class NovelController extends Controller
                     'description_ar' => $novel->description_ar,
                     'description_en' => $novel->description_en,
                     'price_dzd' => $novel->price_dzd,
-                    'cover_image_url' => $novel->cover_image_path ? asset('storage/' . $novel->cover_image_path) : null,
+                    'cover_image_url' => $novel->cover_image_path ? (str_starts_with($novel->cover_image_path, 'http') ? $novel->cover_image_path : asset('storage/' . $novel->cover_image_path)) : null,
                 ];
             });
 
