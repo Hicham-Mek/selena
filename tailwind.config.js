@@ -15,7 +15,15 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Alexandria', ...defaultTheme.fontFamily.sans],
+                serif: ['Amiri', ...defaultTheme.fontFamily.serif],
             },
+            colors: {
+                brand: {
+                    DEFAULT: '#FF2D20',
+                    hover: '#e0261b',
+                    light: '#ff5c52',
+                }
+            }
         },
     },
 
