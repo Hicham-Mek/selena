@@ -102,9 +102,9 @@ export default function ChapterShow({ chapter, novel, prevChapter, nextChapter, 
 
                     {/* Chapter Text (Rich HTML) */}
                     <div
-                        className="select-none text-right prose prose-lg dark:prose-invert max-w-none
-                            prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
-                            prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed
+                        className="select-none text-right prose prose-lg dark:prose-invert max-w-none font-serif text-xl sm:text-2xl leading-loose
+                            prose-headings:font-sans prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
+                            prose-p:text-gray-800 dark:prose-p:text-gray-200 prose-p:leading-[2.2]
                             prose-blockquote:border-indigo-500 prose-blockquote:text-gray-600 dark:prose-blockquote:text-gray-400
                             prose-strong:text-gray-900 dark:prose-strong:text-white
                             prose-a:text-indigo-600 dark:prose-a:text-indigo-400"
