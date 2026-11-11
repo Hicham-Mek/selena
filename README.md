@@ -30,6 +30,16 @@ Designed specifically for the **Algerian market**, it solves the gap between loc
 
 ---
 
+## Demo Walkthrough
+
+> [!NOTE]
+> A live hosted deployment is not currently online. Watch the local screen recording below (`03:15`) for an end-to-end walkthrough of the **Filament v5** admin panel (chapter & audio management, receipt inspection, and order approval/rejection), the **bilingual English/Arabic catalog**, and the **RTL reader dashboard** & order tracking flow.
+
+<!-- GitHub Video Embed: Edit README.md on GitHub.com, delete this comment + the line below, and drag-and-drop `selena-demo-github.mp4` here to render an inline video player. -->
+_Screen recording (`selena-demo-github.mp4`, 03:15) — drag and drop into GitHub's README editor to attach the inline player._
+
+---
+
 ## Key Features
 
 - **Bilingual Arabic-First UI (RTL / LTR)**
